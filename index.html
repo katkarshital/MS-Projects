@@ -1,0 +1,88 @@
+<!DOCTYPE Html>
+<html>
+    <head>
+        <meta charset="utf-8" >
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>My Pizza with Bootstrap Page</title>
+        <link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="css/main.css" /> 
+    </head>
+    <body onload="cleanStorage()">
+        
+        <form action="postClean" method="post">
+        <!-- The example of offsetting columns -->
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-3 col1">
+                <h1><img class="main1" src="images/pizza.jpg" alt="The picture should be here." />Crusty Crunch</h1>
+            </div>
+        </div>
+        <hr />
+
+        <!-- The example of nested columns -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col1">
+
+                    <div class="row"> 
+
+                        <div class="col-xs-12 col-sm-6 col1"> 
+
+                            <img src="images/Pizza1_1.jpg" alt="The picture should be here." />
+
+                        </div> 
+
+                        <div class="col-xs-12 col-sm-6 col2"> 
+
+                            <img src="images/pizza4_1.jpg" alt="The picture should be here." />
+
+                        </div> 
+
+                    </div> 
+                    <div class="row"> 
+
+                        <div class="col-xs-12 col-sm-6 col3"> 
+
+                            <img src="images/pizza3_1.jpg" alt="The picture should be here." />
+
+                        </div> 
+
+                        <div class="col-xs-12 col-sm-6 col4"> 
+
+                            <img src="images/pizza2_1.jpg" alt="The picture should be here." />
+
+                        </div> 
+
+                    </div> 
+
+                </div>
+                <div class="col-md-6 col2">
+                    <h3>Our Story</h3>
+                    <p>For more than 55 years, millions of fans like you have inspired us to make delicious products for life's favorite moments!!!</p>
+                    <img class="history" src="images/history.png" alt="The picture should be here." />
+                </div>
+            </div> 
+
+        </div>
+        <hr />
+
+        <!-- The example of reordering columns -->:3
+        <div class="row">
+            <div class="col-xs-9 col-xs-push-3">
+               
+                <a class="orderbutton" href=" OrderForm.html">Order Now</a>
+            </div>
+        </div>
+        </form>
+        <script>
+            function cleanStorage() {
+                localStorage.removeItem("noOfPizza");
+                localStorage.removeItem("grandTotal");
+                localStorage.removeItem("pizzas");
+                
+            }
+        </script>
+        <script src="js/jquery-1.11.2.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+    </body>
+</html>

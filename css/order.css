@@ -1,0 +1,28 @@
+p {
+    color: darkgoldenrod; 
+}
+h1,h3{ 
+    font-family: Arial, Helvetica, sans-serif; 
+    color: brown;
+    font-style: oblique;
+}
+body{
+    font-size: 150%;
+    font-family: Arial, Helvetica, sans-serif; 
+    color: brown;
+    //text-align: center;
+}
+button{
+
+    padding: 2px 4px;
+    font: 30px sans-serif;
+    border: 1px solid black;
+    color: red;
+    background-color: lemonchiffon;
+    margin-left:  5%;
+    margin-right:   5%;
+}
+table, td, th {
+    border: 2px solid black;
+
+}

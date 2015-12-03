@@ -1,0 +1,191 @@
+<html>
+    <head>
+        <title>Order Form</title>
+        <link rel="stylesheet" type="text/css" href="css/order.css" /> 
+    </head>
+    <body>
+        <form method="post" name="orderform"
+              enctype="application/x-www-form-urlencoded"
+              action="/postAddPizza">
+
+            <fieldset>
+                <legend> Pizza Size </legend>
+                <select id="size">
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+
+                </select>
+            </fieldset>
+
+            <fieldset>
+                <legend> Pizza Type </legend>
+                <select size="2" id="type">
+                    <option selected>Pepperoni
+                    <option>Vegetarian
+                    <option>Combo
+                </select>
+
+            </fieldset>
+            <p><label> <input type=checkbox id="topping" value="1"> Extra Cheese </label></p>
+            <p>Quantity: <input type="text"  id="quantity" required></p>
+            <p><button type="button" name ="Calculate" onclick="calcFunction()">Calculate</button>
+                <button type="button" name ="AdddCart" onclick="AddToCartFunction()">Add to Cart</button>
+                <button type="button" name ="GoCart" onclick="openpage()">Go to Cart</button>
+
+            </p>
+
+            <p>Cost of Selected pizza : <input type="text" name="costPizza" /></p>
+            <a href="CheckoutForm.html">Checkout</a>
+
+
+        </form>
+        <script>
+            var noOfPizza = 0;
+            var costVal = 0;
+            var quantityVal = 0;
+            var total = 0;
+            var extraCheese = 0;
+            var tmpType;
+            var tmpSize;
+            var grandTotal = 0;
+
+            function openpage()
+            {
+                window.location.assign("Cart.html");
+            }
+
+            function calcFunction() {
+                tmpType = document.getElementById("type");
+                tmpSize = document.getElementById("size");
+                switch (tmpType.options[tmpType.selectedIndex].value) {
+                    case "Pepperoni":
+                        if (tmpSize.options[tmpSize.selectedIndex].value === "small") {
+                            costVal = 8.99;
+                        }
+                        else if (tmpSize.options[tmpSize.selectedIndex].value === "medium") {
+                            costVal = 9.99;
+                        }
+                        else
+                            costVal = 10.99;
+                        break;
+
+                    case "Vegetarian":
+                        if (tmpSize.options[tmpSize.selectedIndex].value === "small") {
+                            costVal = 9.99;
+                        }
+                        else if (tmpSize.options[tmpSize.selectedIndex].value === "medium") {
+                            costVal = 10.99;
+                        }
+                        else
+                            costVal = 11.99;
+                        break;
+                    case "Combo":
+                        if (tmpSize.options[tmpSize.selectedIndex].value === "small") {
+                            costVal = 10.99;
+                        }
+                        else if (tmpSize.options[tmpSize.selectedIndex].value === "medium") {
+                            costVal = 11.99;
+                        }
+                        else
+                            costVal = 12.99;
+                        break;
+                }
+                quantityVal = parseInt(document.getElementById("quantity").value);
+                if (quantityVal <= 0) {
+                    alert('Please enter valid Quantities of Pizza!');
+                }
+                total = quantityVal * costVal;
+                if (document.getElementById("topping").checked === true)
+                {
+                    extraCheese = 1;
+                    total += (2 * quantityVal);
+                }
+                document.orderform.costPizza.value = total;
+            }
+
+            function AddToCartFunction() {
+                var myArrayObject = [];
+
+                /*if (typeof (Storage) === "undefined") {
+                 alert("Your browser does not support HTML5 localStorage. Try upgrading.");
+                 }
+                 else {
+                 console.log("Both localStorage and localStorage support is there.");
+                 }*/
+
+                var ty = tmpType.options[tmpType.selectedIndex].value;
+                var sz = tmpSize.options[tmpSize.selectedIndex].value;
+                var myPizza = new Object();
+                var tog = 0;
+
+                myPizza.type = ty;
+                myPizza.size = sz;
+                myPizza.qty = quantityVal;
+                myPizza.ex = extraCheese;
+
+                if (noOfPizza === 0) {
+                    noOfPizza++;
+                    //mydb.insertPizza(myPizza.type, myPizza.size, myPizza.ex, myPizza.qty);
+
+
+                    myArrayObject.push(myPizza);
+                    localStorage.setItem("pizzas", JSON.stringify(myArrayObject));
+
+                }
+                else {
+                    /*
+                    $.getJSON("getPizzas", function (data) {
+                        $.each(data, function () {
+                            $.each(this, function (key, mytmp) {
+                                console.log("Name: " + mytmp.type);
+                                console.log("Size: " + mytmp.size);
+                                if (mytmp.type === ty && mytmp.size === sz &&
+                                        mytmp.ex === extraCheese) {
+                                    mytmp.qty += quantityVal;
+                                    mydb.updatePizza(mytmp.type, mytmp.size, mytmp.ex, mytmp.PizzaID);
+                                }
+
+
+                            });
+                        });
+                    });
+                    */
+                    myArrayObject = JSON.parse(localStorage.getItem("pizzas"));
+                    for (var i = 0; i < myArrayObject.length; i++) {
+                        var mytmp = myArrayObject[i];
+                        console.log("Name: " + mytmp.type);
+                        console.log("Size: " + mytmp.size);
+                        if (mytmp.type === ty && mytmp.size === sz &&
+                                mytmp.ex === extraCheese) {
+                            mytmp.qty += quantityVal;
+
+                            myArrayObject[i] = mytmp;
+                            localStorage.setItem("pizzas", JSON.stringify(myArrayObject));
+                            tog = 1;
+                            break;
+                        }
+                    }
+
+
+                    if (tog === 0) {
+                        noOfPizza++;
+                        //mydb.insertPizza(myPizza.type, myPizza.size, myPizza.ex, myPizza.qty);
+                        myArrayObject.push(myPizza);
+                        localStorage.setItem("pizzas", JSON.stringify(myArrayObject));
+                    }
+                }
+                alert("Done");
+                grandTotal += total;
+                //mydb.updateTotal(grandTotal);
+                localStorage.removeItem("grandTotal");
+                localStorage.setItem("grandTotal", grandTotal);
+
+               //mydb.updatePizzas(noOfPizza);
+                localStorage.removeItem("noOfPizza");
+                localStorage.setItem("noOfPizza", noOfPizza);
+            }
+        </script>
+
+    </body>
+</html>

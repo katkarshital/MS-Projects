@@ -1,0 +1,116 @@
+
+<html>
+    <head>
+        <title>Cart Display</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/order.css" />
+    </head>
+    <body onload="addTable()">
+        <h3>Order List</h3>
+
+        <div id="myDynamicTable">
+
+        </div>
+        <p>
+            <a href="OrderForm.html">Continue Order</a> 
+            <br>
+            <a href="CheckoutForm.html">Checkout</a>
+        </p>
+
+        <script>
+            var table;
+            function addTable() {
+
+                var myTableDiv = document.getElementById("myDynamicTable");
+
+                table = document.createElement('TABLE');
+
+                table.border = '1';
+
+                var tableBody = document.createElement('TBODY');
+                table.appendChild(tableBody);
+                var tr = document.createElement('TR');
+                tableBody.appendChild(tr);
+
+                for (var j = 0; j < 3; j++) {
+                    var td = document.createElement('TD');
+                    td.width = '75';
+                    switch (j) {
+                        case 0:
+                            td.appendChild(document.createTextNode(" Type "));
+                            break;
+                        case 1:
+                            td.appendChild(document.createTextNode(" Size "));
+                            break;
+                        case 2:
+                            td.appendChild(document.createTextNode(" Qty "));
+                            break;
+
+                    }
+
+                    tr.appendChild(td);
+                }
+                /*
+                 $(document).ready(function() {
+                $.getJSON("getPizzas", function(data) {
+                    $.each(data, function() {
+                        $.each(this, function(key, value) {
+                            $("#pizza").append(
+                                    "Type: " + value.TypeOfPizza + "<br>" +
+                                    "Size: " + value.FirstName + "<br><br>"
+                                    );
+                        });
+                    });
+                });
+            });
+            */
+                var myArrayObject = [];
+                myArrayObject = JSON.parse(localStorage.getItem("pizzas"));
+                //mydb.getPizzas(myArrayObject);
+                //$.getJSON("getPizzas", function(myArrayObject));
+
+                if (myArrayObject !== null) {
+                    
+                    for (var i = 0; i < myArrayObject.length; i++) {
+                        var mytmp = new Object();
+                        mytmp.type = "";
+                        mytmp.size = "";
+                        mytmp.qty = "";
+                        mytmp.ex = "";
+
+                        mytmp = myArrayObject[i];
+
+                        var tr = document.createElement('TR');
+                        tableBody.appendChild(tr);
+
+                        for (var j = 0; j < 3; j++) {
+                            var td = document.createElement('TD');
+                            td.width = '75';
+                            switch (j) {
+                                case 0:
+                                    td.appendChild(document.createTextNode(mytmp.type));
+                                    break;
+                                case 1:
+                                    td.appendChild(document.createTextNode(mytmp.size));
+                                    break;
+                                case 2:
+                                    td.appendChild(document.createTextNode(mytmp.qty));
+                                    break;
+
+                            }
+                            tr.appendChild(td);
+                        }
+                    }
+                }
+
+                myTableDiv.appendChild(table);
+                if (myArrayObject === null)
+                    alert("Empty Order List");
+                    
+            }
+            
+
+        </script>
+    </body>
+</html>

@@ -1,0 +1,146 @@
+<html>
+    <head>
+        <title>Checkout Form</title>
+        <script src="js/my_calendar.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="css/order.css" />
+    </head>
+    <body onload="displayTotal()">
+        <form id="0">
+            <h2>Customer Information</h2>
+            <p><label>First Name: <input type="text" id="fname" maxlength="20" 
+                                         onblur = "return checkForChar(this.value);" ></label></p>
+            <p><label>Last Name: <input type="text" id="lname"  maxlength="25"
+                                        onblur = "return checkForChar(this.value);"></label></p>
+
+            <h3>Shipping Information</h3>          
+
+            <p>
+                Address<br />
+                <input type = "text" name = "address_shipping" size = "56" value=""/>
+            </p>          
+            <p>
+                City, State, Zip<br />
+                <input type = "text" id = "city_shipping" size = "34" value=""/>
+                <input type = "text" id = "state_shipping" size = "2" maxlength = "2" value=""/>
+                <input type = "text" id = "zip_shipping" size = "10" maxlength = "5" value=""
+                       onblur = "return checkForNumber(this.value);" />
+            </p>     
+            <p>Telephone</p> 
+            <p>     
+                (<input type = "text" name = "area" size = "3" maxlength = "3" 
+                        onblur = "return checkForNumber(this.value);" />)     
+                <input type = "text" name = "exchange" size = "3" maxlength = "3" 
+                       onblur = "return checkForNumber(this.value);" />
+                <input type = "text" name = "phone" size = "4" maxlength = "4" 
+                       onblur = "return checkForNumber(this.value);" />
+            </p> 
+
+            <p>Sales Type: 
+                <input type="radio" name="salestype" value="cash" 
+                       onchange="cc.hidden = !cc.hidden" checked>Cash
+                <input type="radio" name="salestype" value="credit" 
+                       onchange="cc.hidden = !cc.hidden">Credit
+            </p>
+            <fieldset id="cc" hidden>
+                <legend> Credit Card Details </legend>
+                <p>Credit Card Type: 
+                    <input type="radio" name="creditcardtype" value="ax"
+                           onchange="cardnumAx.hidden = !cardnumAx.hidden;
+                                   cardnumV.hidden = !cardnumV.hidden" checked>AX
+                    <input type="radio" name="creditcardtype" value="v" 
+                           onchange="cardnumV.hidden = !cardnumV.hidden;
+                                   cardnumAx.hidden = !cardnumAx.hidden">V
+                </p>
+                <p>Credit Card Number: </p>
+                <p id="cardnumAx">     
+                    <input type = "text" name = "cardAx1" size = "4" maxlength = "4" 
+                           onblur = "return checkForNumber(this.value);" />    
+                    - <input type = "text" name = "cardAx2" size = "6" maxlength = "6" 
+                             onblur = "return checkForNumber(this.value);" />
+                    - <input type = "text" name = "cardAx3" size = "6" maxlength = "6" 
+                             onblur = "return checkForNumber(this.value);" />
+                </p> 
+                <p id="cardnumV" hidden>     
+                    <input type = "text" name = "cardV1" size = "4" maxlength = "4" 
+                           onblur = "return checkForNumber(this.value);" />    
+                    - <input type = "text" name = "cardV2" size = "4" maxlength = "4" 
+                             onblur = "return checkForNumber(this.value);" />
+                    - <input type = "text" name = "cardV3" size = "4" maxlength = "4" 
+                             onblur = "return checkForNumber(this.value);" />
+                    - <input type = "text" name = "cardV4" size = "4" maxlength = "4" 
+                             onblur = "return checkForNumber(this.value);" />
+                </p> 
+
+                <p>Credit Card Expiration Date:
+                    <input type="text" id="expirationdate" onclick="displayCalendar()"/>
+                    <a href="" onclick="displayCalendar(-1);
+                            return false">Select Date</a>
+                </p>
+
+            </fieldset>
+            <p>Sales Amount: <input type="text" name="salesamt" value="0" /></p>
+            <p>
+                <button name ="finalize" onclick="finalizeFunction()">Finalize</button></p>
+        </form> 
+        <script>
+            function displayTotal() {
+                var grandTotal = localStorage.getItem("grandTotal");
+                document.forms[0].salesamt.value = grandTotal;
+                getTodayDate();
+            }
+            function finalizeFunction() {
+                if (confirmS() === true) {
+                    var orderNumber = Math.ceil(Math.random() * 100);
+                    alert('Order Created  ' + orderNumber);
+                    localStorage.setItem("OrderNumber", orderNumber);
+                }
+            }
+
+            function checkForNumber(fieldValue) {
+                var numberCheck = isNaN(fieldValue);
+                if (numberCheck === true) {
+                    window.alert("You must enter a numeric value!");
+                    return false;
+                }
+                else
+                    return true;
+            }
+            function checkForChar(fieldValue) {
+                var numberCheck = isNaN(fieldValue);
+                if (numberCheck === false) {
+                    window.alert("You must enter a char value!");
+                    return false;
+                }
+                else
+                    return true;
+            }
+            function confirmS() {
+
+                if (document.forms[0].address_shipping.value === ""
+                        || document.forms[0].city_shipping.value === ""
+                        || document.forms[0].state_shipping.value === ""
+                        || document.forms[0].zip_shipping.value === "") {
+                    alert("You must enter your billing information.");
+                    return false;
+                }
+                else if (document.forms[0].value === ""
+                        || document.forms[0].exchange.value === ""
+                        || document.forms[0].phone.value === "") {
+                    window.alert("You must enter your telephone number.");
+                    return false;
+                }
+                else if (document.forms[0].fName.value === "") {
+                    window.alert("You must enter a First name.");
+                    return false;
+                }
+                else if (document.forms[0].lName.value === "") {
+                    window.alert("You must enter a Last name.");
+                    return false;
+                }
+                return true;
+            }
+        </script>
+
+    </body>
+
+</html>
